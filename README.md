@@ -4,12 +4,6 @@ A simple weather application built with **React** that allows users to search fo
 
 ---
 
-## 📸 Preview  
-![Weather App](https://via.placeholder.com/800x400?text=Weather+App+Preview)  
-*(Replace this with an actual screenshot of your app)*
-
----
-
 ## 🚀 Features
 - Search for current weather by city name.
 - Displays temperature, weather icon, and description.
