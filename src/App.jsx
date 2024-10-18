@@ -1,10 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import trash_icon from "/trash.svg";
 
 function App() {
   const [city, setCity] = useState("");
-  const [weatherData, setWeatherData] = useState([]);
+  const [weatherData, setWeatherData] = useState(
+    () => JSON.parse(localStorage.getItem("weatherData")) || []
+  );
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    localStorage.setItem("weatherData", JSON.stringify(weatherData));
+  }, [weatherData]);
 
   const handleCityChange = (e) => {
     setCity(e.target.value);
