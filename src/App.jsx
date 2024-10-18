@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import trash_icon from "/trash.svg";
+import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 
 function App() {
   const [city, setCity] = useState("");
@@ -57,7 +58,15 @@ function App() {
   return (
     <div className='flex justify-center items-center flex-col p-4 gap-4'>
       <div className='container relative flex justify-center items-center flex-col p-4 gap-4 h-40'>
-        <h1 className='w-[180px] text-3xl text-blue-500'>Weather App</h1>
+        <h1 className='w-[250px] text-3xl text-blue-500 flex justify-center items-center gap-2'>
+          Weather App
+          <DotLottieReact
+            src='https://lottie.host/b046172a-27f4-40e2-b374-6bdea0099edc/jOQZbpqmK2.lottie'
+            loop
+            autoplay
+            className='right-0 w-10 h-10'
+          />
+        </h1>
         <form
           action=''
           onSubmit={onSubmit}
