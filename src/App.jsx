@@ -1,9 +1,10 @@
 import { useState } from "react";
-import viteLogo from "/vite.svg";
+import trash_icon from "/trash.svg";
 
 function App() {
   const [city, setCity] = useState("");
-  const [weatherData, setWeatherData] = useState({});
+  const [weatherData, setWeatherData] = useState([]);
+  const [error, setError] = useState("");
 
   const handleCityChange = (e) => {
     setCity(e.target.value);
@@ -12,25 +13,45 @@ function App() {
   const onSubmit = (e) => {
     e.preventDefault();
     if (city.length > 0) fetchWeather(city);
+    setCity("");
   };
   const URL_BASE = "https://api.openweathermap.org/data/2.5/weather?q=";
   const API_KEY = "b8a84cd64b007bd7f7ea5f208fe1850e";
+
   const fetchWeather = async (city) => {
+    if (
+      weatherData.some((item) => item.name.toLowerCase() === city.toLowerCase())
+    ) {
+      setError("City already exists");
+      return;
+    }
     try {
       const res = await fetch(
         `${URL_BASE}${city}&appid=${API_KEY}&units=metric`
       );
       const data = await res.json();
-      setWeatherData(data);
+      if (res.ok) {
+        setWeatherData((prevData) => [...prevData, data]);
+        setError("");
+      } else {
+        setError(data.message);
+      }
     } catch (error) {
       console.log(error);
+      setError("Something went wrong");
     }
+  };
+
+  const handleDeleteCity = (cityToDelete) => {
+    setWeatherData((prevData) =>
+      prevData.filter((data) => data.name !== cityToDelete)
+    );
   };
 
   return (
     <div className='flex justify-center items-center flex-col p-4 gap-4'>
-      <div className='container flex justify-center items-center flex-col p-4 gap-4'>
-        <h1 className='text-3xl text-blue-500'>Weather App</h1>
+      <div className='container relative flex justify-center items-center flex-col p-4 gap-4 h-40'>
+        <h1 className='w-[180px] text-3xl text-blue-500'>Weather App</h1>
         <form
           action=''
           onSubmit={onSubmit}
@@ -51,22 +72,43 @@ function App() {
             Search
           </button>
         </form>
+        {error && (
+          <p className='absolute text-red-500 text-center bottom-0'>{error}</p>
+        )}
       </div>
-      {weatherData.name ? (
-        <div className='flex flex-col items-center justify-center gap-4 w-[400px] bg-slate-50 rounded-xl p-6 drop-shadow-lg'>
-          <h1 className='text-3xl text-blue-500'>{weatherData.name}</h1>
-          <p className='text-2xl'>{Math.round(weatherData.main.temp)}</p>
-          <p className='text-xl text-slate-500'>
-            {weatherData.weather[0].description}
-          </p>
-          <img
-            src={`https://openweathermap.org/img/wn/${weatherData.weather[0].icon}.png`}
-            alt=''
-          />
-        </div>
-      ) : (
-        ""
-      )}
+      <section className='flex flex-wrap items-center justify-center gap-4 rounded-xl p-6'>
+        {weatherData.length > 0 &&
+          weatherData.map((data, index) => {
+            return (
+              <div
+                className='flex flex-col items-center justify-center gap-4 w-[350px] bg-slate-50 rounded-xl p-6 drop-shadow-lg'
+                key={index}
+              >
+                <h1 className='relative text-3xl text-blue-500 w-[100%] text-center flex justify-center'>
+                  {data.name}{" "}
+                  <button
+                    className='absolute top-0 right-0 flex justify-center items-center text-white rounded-md hover:bg-slate-200 p-1'
+                    onClick={() => handleDeleteCity(data.name)}
+                  >
+                    <img
+                      src={trash_icon}
+                      alt='delete_city'
+                      className='w-6 h-6'
+                    />
+                  </button>
+                </h1>
+                <p className='text-2xl'>{Math.round(data.main.temp)}</p>
+                <p className='text-xl text-slate-500'>
+                  {data.weather[0].description}
+                </p>
+                <img
+                  src={`https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`}
+                  alt=''
+                />
+              </div>
+            );
+          })}
+      </section>
     </div>
   );
 }
