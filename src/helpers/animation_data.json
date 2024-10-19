@@ -1,0 +1,76 @@
+{
+  "weather_icons": [
+    {
+      "icon_description": "01d",
+      "img": "sun.gif"
+    },
+    {
+      "icon_description": "01n",
+      "img": "night.gif"
+    },
+    {
+      "icon_description": "02d",
+      "img": "cloudy-sun.gif"
+    },
+    {
+      "icon_description": "02n",
+      "img": "cloudy-night.gif"
+    },
+    {
+      "icon_description": "03d",
+      "img": "clouds-day.gif"
+    },
+    {
+      "icon_description": "03n",
+      "img": "clouds-night.gif"
+    },
+    {
+      "icon_description": "04d",
+      "img": "clouds-day.gif"
+    },
+    {
+      "icon_description": "04n",
+      "img": "clouds-night.gif"
+    },
+    {
+      "icon_description": "09d",
+      "img": "rain.gif"
+    },
+    {
+      "icon_description": "09n",
+      "img": "rain.gif"
+    },
+    {
+      "icon_description": "10d",
+      "img": "rain-sun.gif"
+    },
+    {
+      "icon_description": "10n",
+      "img": "rain.gif"
+    },
+    {
+      "icon_description": "11d",
+      "img": "storm.gif"
+    },
+    {
+      "icon_description": "11n",
+      "img": "storm.gif"
+    },
+    {
+      "icon_description": "13d",
+      "img": "snow-day.gif"
+    },
+    {
+      "icon_description": "13n",
+      "img": "clouds-night.gif"
+    },
+    {
+      "icon_description": "50d",
+      "img": "foggy.gif"
+    },
+    {
+      "icon_description": "50n",
+      "img": "foggy.gif"
+    }
+  ]
+}

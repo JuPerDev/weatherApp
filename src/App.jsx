@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import trash_icon from "/trash.svg";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
+const images = import.meta.glob("./assets/icons/*.gif", { eager: true });
 
 function App() {
   const [city, setCity] = useState("");
@@ -11,6 +12,17 @@ function App() {
 
   useEffect(() => {
     localStorage.setItem("weatherData", JSON.stringify(weatherData));
+    const updateWeatherData = async () => {
+      const updateData = await Promise.all(
+        weatherData.map(async (city) => {
+          const res = await res.json();
+          return res.ok ? data : city;
+        })
+      );
+      setWeatherData(updateData);
+    };
+    const intervalId = setInterval(updateWeatherData, 10 * 60 * 1000);
+    return () => clearInterval(intervalId);
   }, [weatherData]);
 
   const handleCityChange = (e) => {
@@ -55,6 +67,14 @@ function App() {
     );
   };
 
+  const handleImage = (icon) => {
+    const imagePath = images[`./assets/icons/${icon}.gif`];
+    if (!imagePath) {
+      console.warn(`Image not found for icon: ${icon}`);
+    }
+    return imagePath.default;
+  };
+
   return (
     <div className='flex justify-center items-center flex-col p-4 gap-4'>
       <div className='container relative flex justify-center items-center flex-col p-4 gap-4 h-40'>
@@ -75,7 +95,7 @@ function App() {
           <input
             type='text'
             value={city}
-            className='ring-1 ring-blue-500 w-60 px-4 py-2 rounded-md'
+            className='ring-2 focus:ring-4 focus:ring-blue-400 ring-blue-500 w-60 px-4 py-2 rounded-md'
             onChange={handleCityChange}
             placeholder='Enter a city'
             required
@@ -96,7 +116,7 @@ function App() {
           weatherData.map((data, index) => {
             return (
               <div
-                className='flex flex-col items-center justify-center gap-4 w-[350px] bg-slate-50 rounded-xl p-6 drop-shadow-lg'
+                className='flex flex-col items-center justify-center gap-4 w-[350px] bg-white rounded-xl p-6 drop-shadow-lg'
                 key={index}
               >
                 <h1 className='relative text-3xl text-blue-500 w-[100%] text-center flex justify-center'>
@@ -112,13 +132,14 @@ function App() {
                     />
                   </button>
                 </h1>
-                <p className='text-2xl'>{Math.round(data.main.temp)}</p>
+                <p className='text-2xl'>{Math.round(data.main.temp)}°C</p>
                 <p className='text-xl text-slate-500'>
                   {data.weather[0].description}
                 </p>
                 <img
-                  src={`https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`}
-                  alt=''
+                  src={handleImage(data.weather[0].icon)}
+                  alt='animated-icon'
+                  width='100px'
                 />
               </div>
             );
